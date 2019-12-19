@@ -19,9 +19,12 @@ express()
   .set('view engine', 'pug')
   .set('views', path.join(__dirname, 'views'))
   
-  .get('/', (req, res) => res.render('pages/main'))
+  .get('/', (req, res) => res.render('pages/index'))
 
-  .get('/read', (req, res) => res.render('pages/read', {childview: 'read'}))
+  .get('/create', (req, res) => res.render('pages/create'))
+  .get('/read', (req, res) => res.render('pages/read'))
+  .get('/update', (req, res) => res.render('pages/update'))
+  .get('/delete', (req, res) => res.render('pages/delete'))
 
   .get('/db-test', (req, res) => {
 
@@ -39,7 +42,7 @@ express()
         }
     });
 
-    res.render('pages/main')
+    res.render('pages/index')
   })
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
