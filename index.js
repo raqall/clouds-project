@@ -1,5 +1,15 @@
-var neo4j = require('neo4j');
-var db = new neo4j.GraphDatabase("https://cloud-project:b.fq68iSjZlV1V.mIeVHQSgZmeo2me2@hobby-ikemhkkeanodgbkejcmpbfdl.dbs.graphenedb.com:24780/db/data/");
+let dbUsername = 'cloudprojectuser'
+let dbPassword = 'b.9jCoZaxEsKca.UdvPlipZHiKBljDS'
+let dbConnectionString = "bolt://hobby-blfmhkkeanodgbkepkofbfdl.dbs.graphenedb.com:24787"
+
+var neo4j = require('neo4j-driver');
+var driver = neo4j.driver(dbConnectionString, neo4j.auth.basic(dbUsername, dbPassword));
+
+
+console.log(neo4j)
+
+
+var session = driver.session();
 
 const express = require('express')
 const path = require('path')
@@ -14,7 +24,7 @@ function createPerson(){
 }
 
 express()
-  .use(express.urlencoded())
+  .use(express.urlencoded({ extended: true }))
 
   .use(express.static(path.join(__dirname, 'public')))
 
@@ -31,21 +41,22 @@ express()
 
   .post('/list/create', (req, res) => {
 
-    db.cypher({
-      query: 'CREATE (n:Person {name: {personName}}) RETURN n',
-      params: {
-          personName: 'Bob'
-      }
-    }, function(err, results){
-        var result = results[0];
-        if (err) {
-            console.error('Error saving new node to database:', err);
-        } else {
-            console.log('Node saved to database with id:', result['n']['_id']);
-        }
-    });
+    res.set('Content-Type', 'text/html');
+    res.send(new Buffer( JSON.stringify(neo4j) ));
 
-    res.redirect('/list')
+    // console.log(req.body)
+    
+    // session
+    //     .run('CREATE (n:Person {name:"Bob"})')
+    //     .then(function(result) {
+    //         console.log(result)
+    //         session.close();
+    //     })
+    //     .catch(function(error) {
+    //         console.log(error);
+    //     });
+
+    // res.redirect('/list')
     
   })
 
