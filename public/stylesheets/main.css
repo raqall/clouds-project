@@ -3,6 +3,13 @@ body {
   font-size: 13px;
 }
 
+.menu a{
+  margin-right: 10px;
+}
+.menu a:last-child{
+  margin-right: 0;
+}
+
 .content {
   background-color: white;
   border-radius: 15px;
@@ -10,7 +17,7 @@ body {
 }
 
 footer {
-  background-color: darkgray;
+  background-color: lightgray;
   margin: 0 -15px -15px -15px;
   padding: 10px 15px;
   font-size: 12px;
