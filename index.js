@@ -14,6 +14,8 @@ function createPerson(){
 }
 
 express()
+  .use(express.urlencoded())
+
   .use(express.static(path.join(__dirname, 'public')))
 
   .set('view engine', 'pug')
@@ -26,7 +28,8 @@ express()
 
   .get('/graph', (req, res) => res.render('pages/graph'))
 
-  .get('/db-test', (req, res) => {
+
+  .post('/list/create', (req, res) => {
 
     db.cypher({
       query: 'CREATE (n:Person {name: {personName}}) RETURN n',
@@ -42,11 +45,9 @@ express()
         }
     });
 
-    res.render('pages/index')
+    res.redirect('/list')
+    
   })
-
-
-  .post('/list/create', (req, res) => res.redirect('/list'))
 
 
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
