@@ -6,11 +6,12 @@
   },
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "node test.js"
+    "start": "node index.js"
   },
   "dependencies": {
     "express": "^4.15.2",
+    "neo4j": "^2.0.0-RC2",
+    "neo4j-driver": "^4.0.1",
     "pug": "^2.0.4"
   },
   "devDependencies": {
