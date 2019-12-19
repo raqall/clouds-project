@@ -5,10 +5,6 @@ let dbConnectionString = "bolt://hobby-blfmhkkeanodgbkepkofbfdl.dbs.graphenedb.c
 var neo4j = require('neo4j-driver');
 var driver = neo4j.driver(dbConnectionString, neo4j.auth.basic(dbUsername, dbPassword));
 
-
-console.log(neo4j)
-
-
 var session = driver.session();
 
 const express = require('express')
@@ -40,23 +36,18 @@ express()
 
 
   .post('/list/create', (req, res) => {
-
-    res.set('Content-Type', 'text/html');
-    res.send(new Buffer( JSON.stringify(neo4j) ));
-
-    // console.log(req.body)
     
-    // session
-    //     .run('CREATE (n:Person {name:"Bob"})')
-    //     .then(function(result) {
-    //         console.log(result)
-    //         session.close();
-    //     })
-    //     .catch(function(error) {
-    //         console.log(error);
-    //     });
+    session
+        .run('CREATE (n:Person {name:"Bob"})')
+        .then(function(result) {
+            console.log(result)
+            session.close();
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
 
-    // res.redirect('/list')
+    res.redirect('/list')
     
   })
 
