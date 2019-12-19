@@ -21,10 +21,10 @@ express()
   
   .get('/', (req, res) => res.render('pages/index'))
 
-  .get('/create', (req, res) => res.render('pages/create'))
-  .get('/read', (req, res) => res.render('pages/read'))
-  .get('/update', (req, res) => res.render('pages/update'))
-  .get('/delete', (req, res) => res.render('pages/delete'))
+  .get('/list', (req, res) => res.render('pages/list'))
+  .get('/list/create', (req, res) => res.render('pages/create'))
+
+  .get('/graph', (req, res) => res.render('pages/graph'))
 
   .get('/db-test', (req, res) => {
 
@@ -44,6 +44,11 @@ express()
 
     res.render('pages/index')
   })
+
+
+  .post('/list/create', (req, res) => res.redirect('/list'))
+
+
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
 

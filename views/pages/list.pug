@@ -1,0 +1,38 @@
+doctype html
+html(lang="en")
+   head
+      include ../partials/head.pug
+   body.mt-5.mb-4
+      .container
+         .row.justify-content-center
+            .col-11.col-lg-9.content.pt-4
+               .row.mb-3
+                  .col.text-center
+                     include ../partials/top.pug
+               .row
+                  .col
+                     include ../partials/menu.pug
+               .row
+                  .col
+                     h1.text-center osoby aktualnie znajdujące się w bazie
+                     div
+                     table.table
+                        thead
+                           tr
+                              th(scope='col', style='width: 35%') imię
+                              th(scope='col', style='width: 35%') nazwisko
+                              th(scope='col', style='width: 30%')
+                        tbody
+                           each person in [1,2,3,4,5]
+                              tr
+                                 td.align-middle Mark
+                                 td.align-middle Otto
+                                 td.text-right
+                                    button.btn.btn-primary.btn-sm.mr-2 edytuj
+                                    button.btn.btn-danger.btn-sm usuń
+                     a(href='/list/create')
+                        button.btn.btn-success.w-100 dodaj nową osobę
+
+               .row.mt-2
+                  .col
+                     include ../partials/foot.pug

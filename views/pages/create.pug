@@ -3,16 +3,41 @@ html(lang="en")
    head
       include ../partials/head.pug
    body.mt-5.mb-4
-      .container.content.h-100.pt-4
-         .row.h-100.mb-3
-            .col.text-center
-               include ../partials/top.pug
-         .row
-            .col
-               include ../partials/menu.pug
-         .row.text-center
-            .col
-               h1 dodawanie elementów do bazy
-         .row
-            .col
-               include ../partials/foot.pug
+      .container
+         .row.justify-content-center
+            .col-11.col-lg-9.content.pt-4
+               .row.mb-3
+                  .col.text-center
+                     include ../partials/top.pug
+               .row
+                  .col
+                     include ../partials/menu.pug
+               .row.text-center
+                  .col
+                     h1 dodawanie elementów do bazy
+               .row.mt-2
+                  .col
+                     form(action='/list/create', method='POST')
+                        .form-row
+                           .form-group.col
+                              label(for='name') imię:
+                              input#name.form-control(type='text', required)
+                           .form-group.col
+                              label(for='surname') nazwisko:
+                              input#surname.form-control(type='text', required)
+                        .form-row
+                           .form-group.col
+                              label(for='person-select') zna osoby: 
+                                 small.small (klikaj z wciśniętym klawiszem CTRL / ⌘ aby zaznaczyć więcej pozycji)
+                              select#person-select.form-control(multiple, size=12)
+                                 option 1
+                                 option 2
+                                 option 3
+                                 option 4
+                                 option 5
+                        .form-row
+                           .form-group.col
+                              input#submit.btn.btn-success.w-100(type="submit", value="dodaj")
+               .row
+                  .col
+                     include ../partials/foot.pug

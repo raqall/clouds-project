@@ -3,16 +3,18 @@ html(lang="en")
    head
       include ../partials/head.pug
    body.mt-5.mb-4
-      .container.content.h-100.pt-4
-         .row.h-100.mb-3
-            .col.text-center
-               include ../partials/top.pug
-         .row
-            .col
-               include ../partials/menu.pug
-         .row.text-center
-            .col
-               h1 aktualizowanie elementów bazy
-         .row
-            .col
-               include ../partials/foot.pug
+      .container
+         .row.justify-content-center
+            .col-11.col-lg-9.content.pt-4
+               .row.mb-3
+                  .col.text-center
+                     include ../partials/top.pug
+               .row
+                  .col
+                     include ../partials/menu.pug
+               .row.text-center
+                  .col
+                     h1 aktualizowanie elementów bazy
+               .row.mt-2
+                  .col
+                     include ../partials/foot.pug
