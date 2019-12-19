@@ -1,8 +1,7 @@
 {
-  "name": "Start on Heroku: Node.js",
-  "description": "A barebones Node.js app using Express 4",
-  "repository": "https://github.com/heroku/node-js-getting-started",
-  "logo": "https://cdn.rawgit.com/heroku/node-js-getting-started/master/public/node.svg",
+  "name": "Project for Clouds",
+  "repository": "https://github.com/raqall/clouds-project.git",
   "keywords": ["node", "express", "heroku"],
   "image": "heroku/nodejs"
 }
+
