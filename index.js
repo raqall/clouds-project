@@ -70,7 +70,10 @@ express()
 
   .get('/list/update/:id', (req, res) => {
     db.cypher({
-      query: 'MATCH (n:Person) WHERE ID(n) = 3 return ID(n) AS id, n.name AS name, n.surname AS surname'
+      query: 'MATCH (n:Person) WHERE ID(n) = {paramId} return ID(n) AS id, n.name AS name, n.surname AS surname',
+      params: {
+        paramId: req.body.id
+      }
       }, function(err, results){
         if(err){
           res.render('pages/error')
@@ -79,6 +82,10 @@ express()
           res.render('pages/create', { person: results[0], edit: true })
         }      
     })
+  })
+
+  .post('/list/delete/:id', (req, res) => {
+    console.log("deleting: " + req.body.id)
   })
 
   .get('/graph', (req, res) => {
