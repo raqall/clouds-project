@@ -19,14 +19,16 @@ html(lang="en")
                      table.table
                         thead
                            tr
-                              th(scope='col', style='width: 35%') imię
-                              th(scope='col', style='width: 35%') nazwisko
+                              th(scope='col', style='width: 8%') id
+                              th(scope='col', style='width: 31%') imię
+                              th(scope='col', style='width: 31%') nazwisko
                               th(scope='col', style='width: 30%')
                         tbody
-                           each person in [1,2,3,4,5]
+                           each person in people
                               tr
-                                 td.align-middle Mark
-                                 td.align-middle Otto
+                                 td.align-middle= person.id
+                                 td.align-middle= person.name
+                                 td.align-middle= person.surname
                                  td.text-right
                                     button.btn.btn-primary.btn-sm.mr-2 edytuj
                                     button.btn.btn-danger.btn-sm usuń

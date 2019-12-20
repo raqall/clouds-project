@@ -14,30 +14,33 @@ html(lang="en")
                      include ../partials/menu.pug
                .row.text-center
                   .col
-                     h1 dodawanie elementów do bazy
+                     if edit
+                        h1 edycja elementu z bazy
+                     else 
+                        h1 dodawanie elementów do bazy
                .row.mt-2
                   .col
                      form(action='/list/create', method='POST')
                         .form-row
                            .form-group.col
                               label(for='name') imię:
-                              input#name.form-control(name='name', type='text', required)
+                              input#name.form-control(name='name', type='text', required, value=person.name)
                            .form-group.col
                               label(for='surname') nazwisko:
-                              input#surname.form-control(name='surname', type='text', required)
+                              input#surname.form-control(name='surname', type='text', required, value=person.surname)
                         .form-row
                            .form-group.col
                               label(for='person-select') zna osoby: 
                                  small.small (klikaj z wciśniętym klawiszem CTRL / ⌘ aby zaznaczyć więcej pozycji)
                               select#person-select.form-control(multiple, size=12)
-                                 option 1
-                                 option 2
-                                 option 3
-                                 option 4
-                                 option 5
+                                 //- each person in people
+                                 //-    option= person.id + ": " + person.name + " " + person.surname 
                         .form-row
                            .form-group.col
-                              input#submit.btn.btn-success.w-100(type="submit", value="dodaj")
+                              if edit
+                                 input#submit.btn.btn-success.w-100(type="submit", value="zapisz zmiany")
+                              else
+                                 input#submit.btn.btn-success.w-100(type="submit", value="dodaj")
                .row
                   .col
                      include ../partials/foot.pug
