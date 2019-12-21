@@ -2,7 +2,7 @@ doctype html
 html(lang="en")
    head
       include ../partials/head.pug
-   body.mt-5.mb-4
+   body.mt-5.mb-4(onload="draw()")
       .container
          .row.justify-content-center
             .col-11.col-lg-9.content.pt-4
@@ -17,4 +17,38 @@ html(lang="en")
                      h1 wizualizacja grafowa
                .row.mt-2
                   .col
+                     #viz(style="width: 200px; height: 200px;")
+               .row.mt-2
+                  .col
                      include ../partials/foot.pug
+                     
+   script(src='https://rawgit.com/neo4j-contrib/neovis.js/master/dist/neovis.js')
+
+   script.
+      var viz;
+      function draw() {
+         var config = {
+               container_id: "viz",
+               server_url: "bolt://hobby-blfmhkkeanodgbkepkofbfdl.dbs.graphenedb.com:24787",
+               server_user: "cloudprojectuser",
+               server_password: "b.9jCoZaxEsKca.UdvPlipZHiKBljDS",
+               labels: {
+                  "Character": {
+                     "caption": "name",
+                     "size": "pagerank",
+                     "community": "community"
+                  }
+               },
+               relationships: {
+                  "KNOWS": {
+                     "thickness": "weight",
+                     "caption": false
+                  }
+               },
+               initial_cypher: "MATCH (n)-[r:KNOWS]->(m) RETURN *",
+               encrypted: "ENCRYPTION_ON"
+         };
+
+         viz = new NeoVis.default(config);
+         viz.render();
+      }

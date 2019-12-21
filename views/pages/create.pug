@@ -42,9 +42,9 @@ html(lang="en")
                            .form-group.col
                               label(for='person-select') zna osoby: 
                                  small.small (klikaj z wciśniętym klawiszem CTRL / ⌘ aby zaznaczyć więcej pozycji)
-                              select#person-select.form-control(multiple, size=12)
+                              select#person-select.form-control(multiple, size=12, name='list')
                                  each person in people
-                                    option= person.id + ": " + person.name + " " + person.surname 
+                                    option(value=person.id)= person.id + ": " + person.name + " " + person.surname 
                         .form-row
                            .form-group.col
                               if edit

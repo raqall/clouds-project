@@ -51,8 +51,15 @@ express()
    })
 
    .post('/list/create', (req, res) => {
+      var list = req.body.list
+      var intArray = [];
+
+      if (list) {
+         intArray = list.map(Number)
+      }
+
       db.cypher({
-         query: 'CREATE (:Person {name:{paramName}, surname:{paramSurname}})',
+         query: 'CREATE (n:Person {name:{paramName}, surname:{paramSurname}}) RETURN n',
          params: {
             paramName: req.body.name,
             paramSurname: req.body.surname
@@ -61,7 +68,31 @@ express()
          if (err) {
             res.render('pages/error')
          } else {
-            res.redirect('/list')
+            let newPersonId = results[0].n._id
+
+            var processed = 0
+            if(intArray.length > 0){
+               intArray.forEach(id => {
+                  db.cypher({
+                     query: 'MATCH (p) WHERE ID(p)={paramPersonId} MATCH (p2) WHERE ID(p2)={paramOtherPersonId} CREATE (p)-[:KNOWS]->(p2)',
+                     params: {
+                        paramPersonId: newPersonId,
+                        paramOtherPersonId: id
+                     }
+                  }, function (err, results) {
+                     if (err) {
+                        res.render('pages/error')
+                     } else {
+                        processed += 1
+                        if(processed == intArray.length){
+                           res.redirect('/list')
+                        }
+                     }
+                  })
+               });
+            } else {
+               res.redirect('/list')
+            }
          }
       })
    })
@@ -120,19 +151,20 @@ express()
          }
       })
    })
+   
+   .get('/reports', (req, res) => {
+      res.render('pages/reports')
+   })
 
    .get('/graph', (req, res) => {
-
+      let query = 'MATCH (n)-[r:KNOWS]->(m) RETURN *'
       db.cypher({
-         query: 'MATCH (n:Person) RETURN ID(n) AS id'
+         query: query
       }, function (err, results) {
          if (err) {
             res.render('pages/error')
          } else {
-            console.log(results)
-            res.render('pages/create', {
-               people: results
-            })
+            res.render('pages/graph' )
          }
       })
 
