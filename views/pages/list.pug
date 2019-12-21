@@ -30,7 +30,7 @@ html(lang="en")
                                  td.align-middle= person.name
                                  td.align-middle= person.surname
                                  td.text-right
-                                    a(href="list/update/" + person.id)
+                                    a(href="/list/update/" + person.id)
                                        button.btn.btn-primary.btn-sm.mr-2 edytuj
                                     form.d-inline(action="/list/delete/" + person.id, method="POST")
                                        input(type="hidden", name="id", value=person.id)

@@ -20,21 +20,31 @@ html(lang="en")
                         h1 dodawanie elementów do bazy
                .row.mt-2
                   .col
-                     form(action='/list/create', method='POST')
+                     if edit
+                        -var action = '/list/update/' + person.id
+                     else
+                        -var action = '/list/create'
+                     form(action=action, method='POST')
                         .form-row
                            .form-group.col
                               label(for='name') imię:
-                              input#name.form-control(name='name', type='text', required, value=person.name)
+                              if edit
+                                 input#name.form-control(name='name', type='text', required, value=person.name)
+                              else
+                                 input#name.form-control(name='name', type='text', required)
                            .form-group.col
                               label(for='surname') nazwisko:
-                              input#surname.form-control(name='surname', type='text', required, value=person.surname)
+                              if edit
+                                 input#surname.form-control(name='surname', type='text', required, value=person.surname)
+                              else
+                                 input#surname.form-control(name='surname', type='text', required)
                         .form-row
                            .form-group.col
                               label(for='person-select') zna osoby: 
                                  small.small (klikaj z wciśniętym klawiszem CTRL / ⌘ aby zaznaczyć więcej pozycji)
                               select#person-select.form-control(multiple, size=12)
-                                 //- each person in people
-                                 //-    option= person.id + ": " + person.name + " " + person.surname 
+                                 each person in people
+                                    option= person.id + ": " + person.name + " " + person.surname 
                         .form-row
                            .form-group.col
                               if edit
