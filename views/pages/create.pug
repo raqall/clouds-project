@@ -44,7 +44,8 @@ html(lang="en")
                                  small.small (klikaj z wciśniętym klawiszem CTRL / ⌘ aby zaznaczyć więcej pozycji)
                               select#person-select.form-control(multiple, size=12, name='list')
                                  each person in people
-                                    option(value=person.id)= person.id + ": " + person.name + " " + person.surname 
+                                    - let isSelected = knownPeople.includes(person.id)
+                                       option(value=person.id selected=isSelected)= person.id + ": " + person.name + " " + person.surname 
                         .form-row
                            .form-group.col
                               if edit

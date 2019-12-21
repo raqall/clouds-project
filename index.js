@@ -44,7 +44,8 @@ express()
             res.render('pages/error')
          } else {
             res.render('pages/create', {
-               people: results
+               people: results,
+               knownPeople: []
             })
          }
       })
@@ -71,7 +72,7 @@ express()
             let newPersonId = results[0].n._id
 
             var processed = 0
-            if(intArray.length > 0){
+            if (intArray.length > 0) {
                intArray.forEach(id => {
                   db.cypher({
                      query: 'MATCH (p) WHERE ID(p)={paramPersonId} MATCH (p2) WHERE ID(p2)={paramOtherPersonId} CREATE (p)-[:KNOWS]->(p2)',
@@ -84,7 +85,7 @@ express()
                         res.render('pages/error')
                      } else {
                         processed += 1
-                        if(processed == intArray.length){
+                        if (processed == intArray.length) {
                            res.redirect('/list')
                         }
                      }
@@ -113,11 +114,29 @@ express()
                if (err) {
                   res.render('pages/error')
                } else {
-                  let people = results;
-                  res.render('pages/create', {
-                     person: person,
-                     people: people,
-                     edit: true
+                  let remainingPeople = results
+                  db.cypher({
+                     query: `
+                        MATCH (x:Person) WHERE ID(x) = ` + req.params.id + `
+                        MATCH (n:Person) WHERE NOT ID(n) = ` + req.params.id + `
+                        MATCH (x:Person)-[:KNOWS]->(n:Person) RETURN ID(n) AS id
+                     `
+                  }, function (err, results) {
+                     if (err) {
+                        res.render('pages/error')
+                     } else {
+                        let knownPeople = []
+                        results.forEach(function (result) {
+                           knownPeople.push(result.id)
+                        })
+                        console.log(knownPeople)
+                        res.render('pages/create', {
+                           person: person,
+                           knownPeople: knownPeople,
+                           people: remainingPeople,
+                           edit: true
+                        })
+                     }
                   })
                }
             })
@@ -151,23 +170,32 @@ express()
          }
       })
    })
-   
-   .get('/reports', (req, res) => {
-      res.render('pages/reports')
-   })
 
-   .get('/graph', (req, res) => {
-      let query = 'MATCH (n)-[r:KNOWS]->(m) RETURN *'
+   .get('/reports', (req, res) => {
+      let query = `
+      MATCH (b:Person)
+      WITH b, SIZE(()-[:KNOWS]->(b)) as relationCount
+      ORDER BY relationCount DESC LIMIT 1
+      MATCH (a)-[:KNOWS]->(b)
+      RETURN ID(a) AS id, a.name AS name, a.surname AS surname
+         `
+
       db.cypher({
          query: query
       }, function (err, results) {
          if (err) {
             res.render('pages/error')
          } else {
-            res.render('pages/graph' )
+            let mostPopular = results[0];
+            res.render('pages/reports', {
+               mostPopular
+            })
          }
       })
+   })
 
+   .get('/graph', (req, res) => {
+      res.render('pages/graph')
    })
 
    .listen(PORT, () => console.log(`Listening on ${ PORT }`))
