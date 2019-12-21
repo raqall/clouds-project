@@ -10,14 +10,6 @@ const express = require('express')
 const path = require('path')
 const PORT = process.env.PORT || 5000
 
-/*
-    Handlers for functionalities
-*/
-
-function createPerson() {
-   console.log('addig person')
-}
-
 express()
    .use(express.urlencoded({
       extended: true
@@ -32,7 +24,7 @@ express()
 
    .get('/list', (req, res) => {
       db.cypher({
-         query: 'MATCH (n:Person) return ID(n) AS id, n.name AS name, n.surname AS surname ORDER BY n.id'
+         query: 'MATCH (n:Person) RETURN ID(n) AS id, n.name AS name, n.surname AS surname ORDER BY n.id'
       }, function (err, results) {
          if (err) {
             res.render('pages/error')
@@ -46,7 +38,7 @@ express()
 
    .get('/list/create', (req, res) => {
       db.cypher({
-         query: 'MATCH (n:Person) return ID(n) AS id, n.name AS name, n.surname AS surname'
+         query: 'MATCH (n:Person) RETURN ID(n) AS id, n.name AS name, n.surname AS surname'
       }, function (err, results) {
          if (err) {
             res.render('pages/error')
@@ -83,7 +75,7 @@ express()
             res.render('pages/error')
          } else {
             let person = results[0];
-            let query = 'MATCH (n:Person) return ID(n) AS id, n.name AS name, n.surname AS surname ORDER BY n.id'
+            let query = 'MATCH (n:Person) WHERE NOT ID(n) = ' + req.params.id + ' RETURN ID(n) AS id, n.name AS name, n.surname AS surname ORDER BY n.id'
             db.cypher({
                query: query
             }, function (err, results) {
@@ -103,23 +95,17 @@ express()
    })
 
    .post('/list/update/:id', (req, res) => {
-      console.log('update: ' + req.params.id)
-      // let query = 'MATCH (n) WHERE ID(n) = ' + req.params.id + ' RETURN n.name AS name, n.surname AS surname'
-
-      // db.cypher({
-      //    query: query
-      // }, function (err, results) {
-      //    if (err) {
-      //       res.render('pages/error')
-      //    } else {
-      //       let people = results;
-      //       res.render('pages/create', {
-      //          person: person,
-      //          people: people,
-      //          edit: true
-      //       })
-      //    }
-      // })
+      let query = 'MATCH (n) WHERE ID(n) = ' + req.params.id + ' SET n.name = "' + req.body.name + '", n.surname = "' + req.body.surname + '"'
+      console.log(query)
+      db.cypher({
+         query: query
+      }, function (err, results) {
+         if (err) {
+            res.render('pages/error')
+         } else {
+            res.redirect('/list')
+         }
+      })
    })
 
    .post('/list/delete/:id', (req, res) => {
@@ -138,7 +124,7 @@ express()
    .get('/graph', (req, res) => {
 
       db.cypher({
-         query: 'MATCH (n:Person) return ID(n) AS id'
+         query: 'MATCH (n:Person) RETURN ID(n) AS id'
       }, function (err, results) {
          if (err) {
             res.render('pages/error')
